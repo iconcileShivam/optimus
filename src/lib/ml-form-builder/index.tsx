@@ -170,7 +170,7 @@ const getUpdateSchema = (schema: Array<RowSchema>, formId: string) => {
     });
 }
 
-export const MLFormContent: React.FC<BuilderProps> = React.memo((props) => {
+export const MLFormContent: React.FC<BuilderProps> = (props) => {
     const { schema, formId, formikProps, settings } = props;
     const [formSchema, setFormSchema] = useState<Array<RowSchema>>(schema);
     useEffect(() => {
@@ -186,15 +186,7 @@ export const MLFormContent: React.FC<BuilderProps> = React.memo((props) => {
             }
         </>
     )
-}, (p, n) => {
-    let updated = false
-    if (!isEqual(p.schema, n.schema)) {
-        updated = true
-    }
-    if (!isEqual(p.formikProps?.values, n.formikProps?.values))
-        updated = true
-    return !updated
-})
+}
 
 
 export const MLFormAction: React.FC<IFormActionProps & Pick<BuilderProps, 'formId' | 'formikProps'>> = (props) => {

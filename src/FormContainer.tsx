@@ -1,7 +1,7 @@
 import { Box } from '@mui/material'
 import { Formik } from 'formik'
 import { FC } from 'react'
-import { MLFormContent } from './lib/ml-form-builder'
+import { MLFormContent } from 'react-forms'
 
 export interface FormContainerProps { }
 
@@ -24,7 +24,7 @@ const FormContainer: FC<FormContainerProps> = (props) => {
                                         type: 'text',
                                         valueKey: `Hello`,
                                         fieldProps: {
-                                            label: 'Name',
+                                            label: 'Names',
                                             fullWidth: true,
                                         }
                                     }],
