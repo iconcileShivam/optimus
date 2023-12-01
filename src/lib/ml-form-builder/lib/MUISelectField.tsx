@@ -101,27 +101,47 @@ export const MUISelectField: React.FC<IProps> = React.memo((props) => {
 
         </FormControl>
     )
-}, (prev, next) => {
-    let shouldUpdate = false
-    prev.fieldProps!.id = '1'
-    next.fieldProps!.id = '1'
-    if (!isEqual(prev.fieldProps, next.fieldProps))
-        shouldUpdate = true
-    const fieldProps = prev.fieldProps
+}, (p, n) => {
 
-    const pValue = get(prev.formikProps, `values.${fieldProps?.name}`) || ((fieldProps?.multiple) ? [] : '');
-    const nValue = get(next.formikProps, `values.${fieldProps?.name}`) || ((fieldProps?.multiple) ? [] : '');
 
-    const pError = get(prev.formikProps, `errors.${fieldProps?.name}`) || ((fieldProps?.multiple) ? [] : '');
-    const nError = get(prev.formikProps, `errors.${fieldProps?.name}`) || ((fieldProps?.multiple) ? [] : '');
+    p.fieldProps!.id = '1'
+    n.fieldProps!.id = '1'
 
-    if (!isEqual(pError, nError)) {
-        shouldUpdate = true
+    const pFieldName = p.fieldProps?.name || ''
+    const nFieldName = n.fieldProps?.name || ''
+
+    // ========== Checking for getFieldError
+
+    // Field Value
+    if (!isEqual(get(p.formikProps, `values.${pFieldName}`), get(n.formikProps, `values.${nFieldName}`))) {
+        return false
     }
 
-    if (!isEqual(pValue, nValue)) {
-        shouldUpdate = true
+    // Field Error
+    if (!isEqual(get(p.formikProps, `errors.${pFieldName}`), get(n.formikProps, `errors.${nFieldName}`))) {
+        return false
     }
 
-    return !shouldUpdate
+    // get(formikProps, `touched.${fieldName}`)
+    if (!isEqual(get(p.formikProps, `touched.${pFieldName}`), get(n.formikProps, `touched.${nFieldName}`))) {
+        return false
+    }
+
+    // formikProps.submitCount
+    if (!isEqual(p.formikProps?.submitCount, n.formikProps?.submitCount)) {
+        return false
+    }
+
+    // Readonly Prop
+    if (!isEqual(p.isReadOnly, n.isReadOnly)) {
+        return false
+    }
+
+    // Field Props
+    if (!isEqual(p.fieldProps, n.fieldProps)) {
+        return false
+    }
+
+    return true
+
 })
